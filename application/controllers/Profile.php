@@ -65,7 +65,7 @@ class Profile extends My_Controller
 			$search_value = $_POST['search'];
 			$sql = "select * from tbl_student where student_name like '%$search_value%' and student_description like '%$search_value%'";
 			$result_search = $this->Student_Model->query_return_array($sql);
-			$this->load->view();
+			//$this->load->view();
 		}
 	}
 

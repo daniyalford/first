@@ -73,7 +73,7 @@
 			direction: rtl !important;
 		}
 
-		input[type=search] {
+		#search {
 			border-radius: 10px !important;
 			box-shadow: 2px 3px 7px #ffffff !important;
 		}
@@ -92,7 +92,7 @@
 			box-shadow: 2px 3px 7px #f19e80 !important;
 		}
 
-		input[type=search]:hover {
+		#search:hover {
 			box-shadow: 2px 3px 7px #f19e80 !important;
 		}
 
@@ -146,6 +146,7 @@
 		}
 
 		.s8 {
+			margin-top: 270px;
 			width: 100% !important;
 			display: block;
 			margin-right: 0 !important;
@@ -171,7 +172,7 @@
 
 		#id, #idc, #phone, #phoned {
 			border-radius: 10px !important;
-			background-color: #1d2c47 !important;
+			background-color: #443142 !important;
 			outline: none;
 			border: 0;
 			box-shadow: 2px 3px 7px white !important;
@@ -179,7 +180,7 @@
 		}
 
 		footer {
-			position: fixed;
+			position: sticky;
 			bottom: 0;
 			width: 100%;
 			height: 50px;
@@ -197,20 +198,52 @@
 		#ix {
 			width: 100% !important;
 			display: none;
-			padding-top: 10px !important;
+			/*padding-top: 10px !important;*/
+			background-color: #170d0a;
+			margin-top: 17px;
+			padding-bottom: 30px !important;
+			border-bottom-left-radius: 10px !important;
+			border-bottom-right-radius: 10px !important;
+		}
+
+
+		.w-80 li {
+			background-color: #1d2c47;
+		}
+
+		.w-80 {
+			z-index: 999;
+		}
+
+		.w-80 a {
+			color: white;
+		}
+
+		.posfix {
+			position: fixed;
+			top: 55px;
+			z-index: 9999999;
+		}
+
+		.navOne {
+			z-index: 99;
+			height: 65px;
+		}
+
+		.mt-200 {
+			margin-top: 200px !important;
 		}
 	</style>
 	<script src="https://code.jquery.com/jquery-3.6.0.js"
 			integrity="sha256-H+K7U5CnXl1h5ywQfKtSj8PCmoN9aaq30gDh27Xc0jk=" crossorigin="anonymous"></script>
 </head>
 <body>
-<nav class="navbar sticky-top navbar-dark bg-dark" style="z-index: 99;">
+<nav class="navbar navOne sticky-top navbar-dark bg-dark">
 	<div class="container-fluid">
 		<!--		<a class="navbar-brand" href="#">brand</a>-->
 		<form class="d-flex w-90" method="post">
-			<input class="form-control me-2 w-90" id="search" name="search" type="search" placeholder="جست و جو"
+			<input class="form-control me-2 w-90" dir="rtl" id="search" name="search" type="text" placeholder="جست و جو"
 				   aria-label="Search">
-			<div class="w-90 bg-light d-none searchBoxResult"></div>
 			<button class="col btn btn-dark-moon" name="btn_search" type="submit">یافتن</button>
 		</form>
 		<button id="id">
@@ -256,7 +289,6 @@
 		<!--		chat menus-->
 	</div>
 </nav>
-<script>
-
-</script>
-
+<div class="container-fluid posfix">
+	<div class="d-none searchBoxResult w-90 w-80"></div>
+</div>

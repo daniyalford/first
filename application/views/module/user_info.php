@@ -20,7 +20,7 @@ function user_info_list($field_name, $field_select_name, $data, $select_info)
 				$a .= " " . $value[$field_select_name . '_name'] . " ";
 			}
 		} else {
-			echo 'علاقه مندی وارد نشده';
+			$a .= 'علاقه مندی وارد نشده';
 		}
 		$a .= "</li><label for='workExperience'>سابقه کار</label><li class='list-group-item workExperience'>";
 		foreach ($data as $key) {
@@ -30,4 +30,5 @@ function user_info_list($field_name, $field_select_name, $data, $select_info)
 		return $a;
 	}
 }
+
 ?>
