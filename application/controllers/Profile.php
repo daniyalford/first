@@ -4,16 +4,6 @@ class Profile extends My_Controller
 {
 	public function index($id = 1)
 	{
-//		$a1 = array('uni_info' => @$uni_info);
-
-
-//		$a4 = array(
-//			'profileName' => $this->session->userdata('fullName'),
-//			'userAge' => $this->session->userdata('age'),
-//			'userFavorite' => $this->session->userdata('userFavorite'),
-//			'userWorkExperience' => array_sum($this->session->userdata('workExperience'))
-//		);
-		//			'friendsTable' => $this->load->view('module/list', @$a1, true),
 		$lib = new My_Lib();
 
 		$this->load->driver('cache', array('adapter' => 'apc', 'backup' => 'file', 'key_prefix' => 'my_'));
@@ -24,24 +14,26 @@ class Profile extends My_Controller
 			$sql = 'select * from tbl_city';
 			$uni_info1 = $this->Student_Model->query_return_array($sql);
 			$user_info_db = $this->Student_Model->select_where('tbl_student', array('student_id' => $id));
-			$sqlQuery = 'select * from tbl_menu';
-			$menu_info = $this->Student_Model->query_return_array($sqlQuery);
-			$a3 = array();
-			$a2 = array(
-				'menu_info' => $menu_info,
-			);
-			$this->load->view('module/list', array(), true);
+			if (isset($_POST['btn_search'])) {
+				$search_value = $_POST['search'];
+				if ($search_value) {
+					$sql_run = "select * from tbl_student where student_name like '%$search_value%' and student_description like '%$search_value%'";
+					$result_search = $this->Student_Model->query_return_array($sql_run);
+				}
+			}$this->load->view('module/list', array(), true);
 			$this->load->view('module/user_info', array(), true);
-
+			foreach ($user_info_db as $key) {
+				$username = $key['student_name'];
+			}
 			$data_info = array(
 				'friendsTable' => list_info_user($uni_info, 'univercity'),
 				'uni_info1' => $uni_info1,
-				'rightMenu' => $this->load->view('module/rightSide', array('menu' => $lib->show_lists('menu', true, '', '')), true),
-				'chatMenu' => $this->load->view('module/chat', @$a3, true),
+				'rightMenu' => $this->load->view('module' . DS . 'rightSide', array('username' => $username, 'menu' => $lib->show_lists('menu', true, '0', 'parent_id')), true),
+				'chatMenu' => $this->load->view('module' . DS . 'chat', array(), true),
 				'city_list' => $lib->show_lists('city', false, '', ''),
-				//'info_content' => $this->load->view('module/user_info', @$a4, true),
 				'user_info' => $lib->user_info('student', $id, 'intrest', 'hobby'),
-				'list_user' => $lib->list_info_user1('student')
+				'list_user' => $lib->list_info_user1('student'),
+				'data' => @$result_search
 			);
 			$profile = $this->load->view('profile', $data_info, true);
 			$this->cache->save('cprofile', $profile, 300);
@@ -54,22 +46,18 @@ class Profile extends My_Controller
 		$page .= $profile;
 		$page .= $this->load->view('footer' . DS . 'footer', '', true);
 		echo $page;
-//		var_dump($this->cache->cache_info());
-		//	var_dump($this->cache->get_metadata('my_foo'));
 	}
 
-	public function groups()
-	{
-		$this->output->cache(10);
-		if (isset($_POST['btn_search'])) {
-			$search_value = $_POST['search'];
-			$sql = "select * from tbl_student where student_name like '%$search_value%' and student_description like '%$search_value%'";
-			$result_search = $this->Student_Model->query_return_array($sql);
-			//$this->load->view();
-		}
-	}
+//	public function groups($id)
+//	{
+//		$page = $this->load->view('header' . DS . 'header', array('title'=>''), true);
+//		$page .= $this->load->view('profile'.DS.'groups',array());
+//		$page .= $this->load->view('footer' . DS . 'footer', '', true);
+//
+//	}
 
-	public function result()
+	public
+	function result()
 	{
 		if ($_POST['searchKey'] !== '') {
 			$searchKey = $_POST['searchKey'];
@@ -77,8 +65,7 @@ class Profile extends My_Controller
 			$search_info = $this->Student_Model->query_return_array($query);
 			$lib = new My_Lib();
 			$this->load->view('module/list', array(), true);
-			echo $lib->search_box($search_info, 'student', '_id', base_url() . 'profile/index/');
+			echo $lib->search_box($search_info, 'student', '_id', base_url() . 'profile' . DS . 'index' . DS);
 		}
-//		$this->load->view('header' . DS . 'header', array('title' => 'نتایج جست و جو'), true);
 	}
 }
