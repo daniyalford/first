@@ -40,7 +40,7 @@
 		crossorigin="anonymous"></script>
 <script>
 	$(document).ready(function () {
-		$('.searchBoxResult').hide();
+		// $('.searchBoxResult').hide();
 		$('#id').click(function () {
 			$(this).hide();
 			$('#idc').show();
@@ -80,14 +80,21 @@
 		$('#search').keyup(function (event) {
 			let searchKey = $(this).val();
 			$.ajax({
-				url: window.location.origin + '/work/profile/result',
 				method: 'post',
+				url: window.location.origin + '/work/profile/result',
 				data: {searchKey: searchKey},
 				success: function (values) {
-					$('.searchBoxResult').show();
 					$('.searchBoxResult').html(values);
+					$('.searchBoxResult').removeClass('d-none');
+					alert(values)
 				}
 			})
+			// change color text with search
+			let src_str = $(".content").html();
+			searchKey = searchKey.replace(/(\s+)/, "(<[^>]+>)*$1(<[^>]+>)*");
+			let pattern = new RegExp("(" + searchKey + ")", "gi");
+			src_str = src_str.replace(pattern, "<span style='color: red'>$1</span>");
+			$(".content").html(src_str);
 		})
 	})
 </script>

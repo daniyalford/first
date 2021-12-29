@@ -207,10 +207,10 @@
 <nav class="navbar sticky-top navbar-dark bg-dark" style="z-index: 99;">
 	<div class="container-fluid">
 		<!--		<a class="navbar-brand" href="#">brand</a>-->
-		<form class="d-flex w-90">
+		<form class="d-flex w-90" method="post">
 			<input class="form-control me-2 w-90" id="search" name="search" type="search" placeholder="جست و جو"
 				   aria-label="Search">
-			<div class="w-90" style="display: none"></div>
+			<div class="w-90 bg-light d-none searchBoxResult"></div>
 			<button class="col btn btn-dark-moon" name="btn_search" type="submit">یافتن</button>
 		</form>
 		<button id="id">

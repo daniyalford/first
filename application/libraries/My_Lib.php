@@ -50,7 +50,9 @@ class My_Lib
 
 	public function search_box($data, $name, $separator, $address)
 	{
-		return list_info_user_with_anchor($data, $name,$separator ,$address);
+		if (!empty($data)) {
+			return list_info_user_with_anchor($data, $name, $separator, $address);
+		}return false;
 	}
 }
 

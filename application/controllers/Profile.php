@@ -61,18 +61,24 @@ class Profile extends My_Controller
 	public function groups()
 	{
 		$this->output->cache(10);
+		if (isset($_POST['btn_search'])) {
+			$search_value = $_POST['search'];
+			$sql = "select * from tbl_student where student_name like '%$search_value%' and student_description like '%$search_value%'";
+			$result_search = $this->Student_Model->query_return_array($sql);
+			$this->load->view();
+		}
 	}
 
 	public function result()
 	{
-		$lib = new My_Lib();
-		$searchKey = $_POST['searchKey'];
-		if ($searchKey !== '') {
-			$query = "select * from tbl_student where student_name like '%$searchKey%' and student_description like '%$searchKey%'";
+		if ($_POST['searchKey'] !== '') {
+			$searchKey = $_POST['searchKey'];
+			$query = "select * from tbl_student where student_name like '%$searchKey%' or student_description like '%$searchKey%'";
 			$search_info = $this->Student_Model->query_return_array($query);
-			$lib->search_box($search_info, 'student', '_id', base_url() . 'profile/groups');
-			return $search_info;
+			$lib = new My_Lib();
+			$this->load->view('module/list', array(), true);
+			echo $lib->search_box($search_info, 'student', '_id', base_url() . 'profile/index/');
 		}
-		$this->load->view('header' . DS . 'header', array('title' => 'نتایج جست و جو'), true);
+//		$this->load->view('header' . DS . 'header', array('title' => 'نتایج جست و جو'), true);
 	}
 }
