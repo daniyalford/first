@@ -33,7 +33,6 @@ class Profile extends My_Controller
 
 	public function search()
 	{
-
 		$lib = new My_Lib();
 		$this->load->driver('cache', array('adapter' => 'apc', 'backup' => 'file', 'key_prefix' => 'my_'));
 		if (!$profile = $this->cache->get('listFile')) {
@@ -70,7 +69,6 @@ class Profile extends My_Controller
 
 	}
 
-
 	public function QueryResult()
 	{
 		if ($_POST['searchKey'] !== '') {
@@ -80,6 +78,89 @@ class Profile extends My_Controller
 			$lib = new My_Lib();
 			$this->load->view('module/list', array(), true);
 			echo $lib->search_box($search_info, 'student', '_id', base_url() . 'profile' . DS . 'index' . DS);
+		}
+	}
+
+//	public function chat()
+//	{
+//		if (isset($_POST['btnSendChat'])) {
+//			$config = array(
+//				array(
+//					'field' => 'usernameReceiver',
+//					'label' => 'usernameReceiver',
+//					'rules' => 'required',
+//					'errors' => array(
+//						'required' => 'You must provide a %s.',
+//					),
+//				),
+//				array(
+//					'field' => 'chatContent',
+//					'label' => 'chatContent',
+//					'rules' => 'required',
+//					'errors' => array(
+//						'required' => 'You must provide a %s.',
+//					),
+//				)
+//			);
+//			$this->form_validation->set_rules($config);
+//			if ($this->form_validation->run() === FALSE) {
+//				$massage['usernameReceiver'] = form_error('usernameReceiver');
+//				$massage['chatContent'] = form_error('chatContent');
+//			} else {
+//				$chat_sender_id = 1;
+//				// $chat_sender_id = $this->session->userdata('user_id');
+//				$chat_receiver_info = $this->Student_Model->select_where('users', array('username' => $_POST['usernameReceiver']));
+//				foreach ($chat_receiver_info as $val) {
+//					$chat_receiver_id = $val['id'];
+//				}
+//				$this->Student_Model->insert_data('tbl_chat', array('chat_receiver_id' => @$chat_receiver_id, 'chat_sender_id' => @$chat_sender_id, 'chat_content' => $_POST['chatContent']));
+//				$massage['success'] = 'success';
+//			}
+//			$this->load->view('module' . DS . 'chat', array('message' => @$massage), true);
+//		}
+//	}
+
+
+	public function checkUser()
+	{
+		if ($_POST['selectNameValue'] !== '') {
+			$user = $_POST['selectNameValue'];
+			$query = "select * from users where username like '%$user%' or email like '%$user%'";
+			$search_info = $this->Student_Model->query_return_array($query);
+			if (!empty($search_info)) {
+				foreach ($search_info as $val) {
+					$username = $val['username'];
+				}
+				if (!empty($username)) {
+					echo $username;
+				}
+			} else {
+				return false;
+			}
+
+		}
+	}
+
+	public function checkUserAndSendChat()
+	{
+		if ($_POST['receiverName'] !== '' && $_POST['chatContent'] !== '') {
+			$user = $_POST['receiverName'];
+			$query = "select * from users where username like '%$user%' or email like '%$user%'";
+			$search_info = $this->Student_Model->query_return_array($query);
+			if (!empty($search_info)) {
+				foreach ($search_info as $value) {
+					$receive_id = $value['id'];
+				}
+				$sender_id = $this->session->userdata('user_id');
+				$send = $this->Student_Model->insert_data('tbl_chat', array('chat_receiver_id' => @$receive_id, 'chat_sender_id' => @$sender_id, 'chat_content' => $_POST['chatContent']));
+				if ($send) {
+					return true;
+				} else {
+					return false;
+				}
+			}
+		} else {
+			return false;
 		}
 	}
 }

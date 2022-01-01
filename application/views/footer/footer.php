@@ -76,5 +76,40 @@
 				$('.searchBoxResult').addClass('d-none');
 			}
 		})
+		$('#usernameReceiver').keyup(function () {
+			let selectNameValue = $(this).val();
+			$.ajax({
+				method: 'post',
+				url: window.location.origin + '/work/profile/checkUser',
+				data: {selectNameValue: selectNameValue},
+				success: function (values) {
+					if (values !== false) {
+						$(this).val(values);
+					} else {
+						$("#error_chat").show();
+					}
+				}
+			})
+		})
+		$('#btnSendChat').click(function () {
+			let receiverName = $("#usernameReceiver").val();
+			let chatContent = $("#chatContent").val();
+			$.ajax({
+				method: 'post',
+				url: window.location.origin + '/work/profile/checkUserAndSendChat',
+				data: {receiverName: receiverName, chatContent: chatContent},
+				success: function (value) {
+					if (value != 'false') {
+						Swal.fire({
+							position: 'top-end',
+							icon: 'success',
+							title: 'متن شما با موفقیت ارسال شد',
+							showConfirmButton: false,
+							timer: 1500
+						})
+					}
+				}
+			})
+		})
 	})
 </script>

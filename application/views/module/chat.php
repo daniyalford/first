@@ -12,7 +12,7 @@ $data2 = array(
 		'class' => 'h-10p formGroup form-control',
 		'placeholder' => 'متن پیام');
 $data_btn = array(
-		'type' => 'submit',
+		'type' => 'button',
 		'name' => 'btnSendChat',
 		'id' => 'btnSendChat',
 		'content' => 'ارسال',
@@ -24,6 +24,9 @@ $btn_send = form_button($data_btn);
 $form_chat_close = form_close();
 ?>
 <div class="chat">
+	<div class="alert alert-danger rounded-10 text-center p-3" id="error_chat" style="display: none">کاربر مورد نظر شما
+		یافت نشد
+	</div>
 	<?= $form_chat_open ?>
 	<div class="mt-4 mb-4">
 		<?= $name_received ?>
@@ -41,3 +44,4 @@ $form_chat_close = form_close();
 	</div>
 	<?= $form_chat_close ?>
 </div>
+

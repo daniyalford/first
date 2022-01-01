@@ -28,8 +28,19 @@ class Auth extends CI_Controller
 	function login()
 	{
 		if ($this->tank_auth->is_logged_in()) {                                    // logged in
-			redirect('');
-
+			$data_info = $this->Student_Model->select_where('users', array('id' => $this->session->userdata('user_id')));
+			$rule = $data_info['0']['rule'];
+			$pic = $data_info['0']['pic'];
+			$name = $data_info['0']['username'];
+			$status = $data_info['0']['activated'];
+			$session_arr = array('rule' => $rule, 'pic' => $pic, 'status' => $status, 'name' => $name);
+			$this->session->set_userdata($session_arr);
+			if ($this->session->userdata('rule') === 'admin') {
+				redirect(base_url() . 'admin');
+			}
+//			if ($this->session->userdata('rule') === 'user') {
+//				redirect(base_url() . 'user');
+//			}
 		} elseif ($this->tank_auth->is_logged_in(FALSE)) {                        // logged in, not activated
 			redirect('/auth/send_again/');
 
@@ -104,8 +115,8 @@ class Auth extends CI_Controller
 	function logout()
 	{
 		$this->tank_auth->logout();
-
 		$this->_show_message($this->lang->line('auth_message_logged_out'));
+		session_unset();
 	}
 
 	/**

@@ -7,8 +7,15 @@
 		<?php if (isset($search_data_info) && !empty($search_data_info)) {
 			$main = '';
 			$num = 0;
+
 			foreach ($search_data_info as $tb) {
-				$main .= '<div class="media"><p class="pull-right"><small>' . $tb['in_date'] . '</small></p><a class="media-left" href="#"><img src="' . $tb['student_pic'] . '" alt="student picture"></a><div class="media-body"><a href="' . base_url() . 'profile' . DS . 'index' . DS . $tb['student_id'] . '" class="media-heading user_name">' . $tb['student_name'] . '</a>' . $tb['student_description'] . '<p><small><a href="#">Like</a> - <a href="#">Share</a></small></p></div></div>';
+				$date_arr = explode('-', $tb['in_date']);
+				$year = $date_arr['0'];
+				$month = $date_arr['1'];
+				$date_day = explode(' ', $date_arr['2']);
+				$day = $date_day['0'];
+				$jalali_date = gregorian_to_jalali($year, $month, $day);
+				$main .= '<div class="media"><a class="media-left" href="#"><img src="' . $tb['student_pic'] . '" alt="student picture"></a><div class="media-body"><a href="' . base_url() . 'profile' . DS . 'index' . DS . $tb['student_id'] . '" class="media-heading user_name">' . $tb['student_name'] . '</a>' . $tb['student_description'] . '<p><small><a href="#">Like</a> - <a href="#">Share</a></small></p><p class="pull-right"><small>' . $jalali_date['0'] . '/' . $jalali_date['1'] . '/' . $jalali_date['2'] . '</small></p></div></div>';
 				$num++;
 			} ?>
 			<div class="row mt-3">

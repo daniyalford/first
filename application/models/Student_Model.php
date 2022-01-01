@@ -30,6 +30,11 @@ class Student_Model extends CI_Model
 		return $this->db->get_where($table, $condition)->result_array();
 	}
 
+	public function insert_data($table, $data)
+	{
+		$this->db->insert($table, $data);
+	}
+
 }
 
 ?>
