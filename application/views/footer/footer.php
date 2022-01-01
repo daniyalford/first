@@ -58,7 +58,7 @@
 			if (searchKey !== '') {
 				$.ajax({
 					method: 'post',
-					url: window.location.origin + '/work/profile/result',
+					url: window.location.origin + '/work/profile/QueryResult',
 					data: {searchKey: searchKey},
 					success: function (values) {
 						if (values !== '') {

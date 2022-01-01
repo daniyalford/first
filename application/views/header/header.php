@@ -250,7 +250,7 @@
 <nav class="navbar navOne sticky-top navbar-dark bg-dark">
 	<div class="container-fluid">
 		<!--		<a class="navbar-brand" href="#">brand</a>-->
-		<form class="d-flex w-90" method="post" action="<?= base_url() ?>profile<?= DS ?>index">
+		<form class="d-flex w-90" method="post" action="<?= base_url() ?>profile<?= DS ?>search">
 			<input class="form-control me-2 w-90" dir="rtl" id="search" name="search" type="text" placeholder="جست و جو"
 				   aria-label="Search">
 			<button class="col btn btn-dark-moon" name="btn_search" type="submit">یافتن</button>
