@@ -16,11 +16,14 @@ class Profile extends My_Controller
 			$user_info_db = $this->Student_Model->select_where('tbl_student', array('student_id' => $id));
 			if (isset($_POST['btn_search'])) {
 				$search_value = $_POST['search'];
-				if ($search_value) {
+				if ($search_value !== '') {
 					$sql_run = "select * from tbl_student where student_name like '%$search_value%' and student_description like '%$search_value%'";
-					$result_search = $this->Student_Model->query_return_array($sql_run);
+				} else {
+					$sql_run = 'select * from tbl_student';
 				}
-			}$this->load->view('module/list', array(), true);
+				$search_data_info = $this->Student_Model->query_return_array($sql_run);
+			}
+			$this->load->view('module/list', array(), true);
 			$this->load->view('module/user_info', array(), true);
 			foreach ($user_info_db as $key) {
 				$username = $key['student_name'];
@@ -33,7 +36,7 @@ class Profile extends My_Controller
 				'city_list' => $lib->show_lists('city', false, '', ''),
 				'user_info' => $lib->user_info('student', $id, 'intrest', 'hobby'),
 				'list_user' => $lib->list_info_user1('student'),
-				'data' => @$result_search
+				'search_data_info' => @$search_data_info
 			);
 			$profile = $this->load->view('profile', $data_info, true);
 			$this->cache->save('cprofile', $profile, 300);

@@ -1,4 +1,4 @@
-<footer class="mt-5 bg-dark mb-0 text-center" style="height: 130px;">
+<footer class="text-center">
 	<section class="py-5">
 		<p>footer test text</p>
 	</section>

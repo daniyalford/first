@@ -4,28 +4,20 @@
 		<?= $chatMenu ?>
 	</aside>
 	<div class="content s4">
-		<?php if (isset($data)) { ?>
-			<div class="row">
+		<?php if (isset($search_data_info)) {
+			$main = '';
+			$num = 0;
+			foreach ($search_data_info as $tb) {
+				$main .= '<div class="media"><p class="pull-right"><small>' . $tb['in_date'] . '</small></p><a class="media-left" href="#"><img src="' . $tb['student_pic'] . '" alt="student picture"></a><div class="media-body"><h4 class="media-heading user_name">' . $tb['student_name'] . '</h4>' . $tb['student_description'] . '<p><small><a href="#">Like</a> - <a href="#">Share</a></small></p></div></div>';
+				$num++;
+			} ?>
+			<div class="row mt-3">
 				<div class="col-md-8">
 					<div class="page-header">
-						<h1><small class="pull-right">45 comments</small> Comments </h1>
+						<h1>تعداد نفرات: <?= $num ?> نفر</h1>
 					</div>
 					<div class="comments-list">
-						<?php foreach ($data as $tb) { ?>
-							<div class="media">
-								<p class="pull-right"><small><?= //$tb['time'] ?></small></p>
-								<a class="media-left" href="#">
-									<img src="<?= //$tb['pic'] ?>">
-								</a>
-								<div class="media-body">
-
-									<h4 class="media-heading user_name"><?= $tb['student_name'] ?></h4>
-									<?= $tb['student_description'] ?>
-
-									<p><small><a href="">Like</a> - <a href="">Share</a></small></p>
-								</div>
-							</div>
-						<?php } ?>
+						<?= $main ?>
 					</div>
 				</div>
 			</div>

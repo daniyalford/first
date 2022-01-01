@@ -180,10 +180,10 @@
 		}
 
 		footer {
-			position: sticky;
+			position: fixed;
 			bottom: 0;
 			width: 100%;
-			height: 50px;
+			height: 130px;
 			background: #141E30; /* fallback for old browsers */
 			background: -webkit-linear-gradient(to right, #243B55, #141E30); /* Chrome 10-25, Safari 5.1-6 */
 			background: linear-gradient(to right, #243B55, #141E30); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
@@ -250,7 +250,7 @@
 <nav class="navbar navOne sticky-top navbar-dark bg-dark">
 	<div class="container-fluid">
 		<!--		<a class="navbar-brand" href="#">brand</a>-->
-		<form class="d-flex w-90" method="post">
+		<form class="d-flex w-90" method="post" action="<?= base_url() ?>profile<?= DS ?>index">
 			<input class="form-control me-2 w-90" dir="rtl" id="search" name="search" type="text" placeholder="جست و جو"
 				   aria-label="Search">
 			<button class="col btn btn-dark-moon" name="btn_search" type="submit">یافتن</button>
