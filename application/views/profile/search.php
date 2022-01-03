@@ -3,7 +3,7 @@
 		<?= $rightMenu ?>
 		<?= $chatMenu ?>
 	</aside>
-	<div class="content s4">
+	<div class="content s4" dir="rtl">
 		<?php if (isset($search_data_info) && !empty($search_data_info)) {
 			$main = '';
 			$num = 0;
@@ -15,7 +15,7 @@
 				$date_day = explode(' ', $date_arr['2']);
 				$day = $date_day['0'];
 				$jalali_date = gregorian_to_jalali($year, $month, $day);
-				$main .= '<div class="media"><a class="media-left" href="#"><img src="' . $tb['student_pic'] . '" alt="student picture"></a><div class="media-body"><a href="' . base_url() . 'profile' . DS . 'index' . DS . $tb['student_id'] . '" class="media-heading user_name">' . $tb['student_name'] . '</a>' . $tb['student_description'] . '<p><small><a href="#">Like</a> - <a href="#">Share</a></small></p><p class="pull-right"><small>' . $jalali_date['0'] . '/' . $jalali_date['1'] . '/' . $jalali_date['2'] . '</small></p></div></div>';
+				$main .= '<div class="media"><a class="d-block mb-1 media-left" href="#"><img class="text-left" src="' . $tb['student_pic'] . '" alt="student picture"></a><div class="media-body text-right"><a href="' . base_url() . 'profile' . DS . 'index' . DS . $tb['student_id'] . '" class="media-heading user_name">' . $tb['student_name'] . '</a>' . $tb['student_description'] . '<p><small><a href="#">Like</a> - <a href="#">Share</a></small></p><p class="pull-right"><small>' . $jalali_date['0'] . '/' . $jalali_date['1'] . '/' . $jalali_date['2'] . '</small></p></div></div>';
 				$num++;
 			} ?>
 			<div class="row mt-3">

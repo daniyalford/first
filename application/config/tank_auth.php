@@ -4,11 +4,23 @@
 |--------------------------------------------------------------------------
 | Website details
 |
-| These details are used in emails sent by authorization library.
+| These details are used in emails sent by authentication library.
 |--------------------------------------------------------------------------
 */
 $config['website_name'] = 'Your project';
 $config['webmaster_email'] = 'webmaster@your-site.com';
+
+/*
+|--------------------------------------------------------------------------
+| Security settings
+|
+| The library uses PasswordHash library for operating with hashed passwords.
+| 'phpass_hash_portable' = Can passwords be dumped and exported to another server. If set to FALSE then you won't be able to use this database on another server.
+| 'phpass_hash_strength' = Password hash strength.
+|--------------------------------------------------------------------------
+*/
+$config['phpass_hash_portable'] = FALSE;
+$config['phpass_hash_strength'] = 8;
 
 /*
 |--------------------------------------------------------------------------
@@ -28,7 +40,7 @@ $config['webmaster_email'] = 'webmaster@your-site.com';
 |--------------------------------------------------------------------------
 */
 $config['allow_registration'] = TRUE;
-$config['captcha_registration'] = false;
+$config['captcha_registration'] = TRUE;
 $config['email_activation'] = TRUE;
 $config['email_activation_expire'] = 60 * 60 * 24 * 2;
 $config['email_account_details'] = TRUE;
@@ -97,8 +109,8 @@ $config['forgot_password_expire'] = 60 * 15;
 | 'captcha_case_sensitive' = Captcha case sensitive or not.
 |--------------------------------------------------------------------------
 */
-$config['captcha_path'] = base_url() . 'captcha' . DS;
-$config['captcha_fonts_path'] = base_url() . 'captcha' . DS . 'fonts' . DS . '5.ttf';
+$config['captcha_path'] = 'captcha' . DS;
+$config['captcha_fonts_path'] = 'captcha' . DS . 'fonts' . DS . '5.ttf';
 $config['captcha_width'] = 200;
 $config['captcha_height'] = 50;
 $config['captcha_font_size'] = 14;
@@ -114,9 +126,20 @@ $config['captcha_case_sensitive'] = TRUE;
 | You can get reCAPTCHA keys by registering at http://recaptcha.net
 |--------------------------------------------------------------------------
 */
+$config['use_ssl'] = FALSE;
 $config['use_recaptcha'] = FALSE;
 $config['recaptcha_public_key'] = '';
 $config['recaptcha_private_key'] = '';
+
+/*
+|--------------------------------------------------------------------------
+| Database settings
+|
+| 'db_table_prefix' = Table prefix that will be prepended to every table name used by the library
+| (except 'ci_sessions' table).
+|--------------------------------------------------------------------------
+*/
+$config['db_table_prefix'] = '';
 
 
 /* End of file tank_auth.php */

@@ -7,15 +7,18 @@
  * (to protect the site from brute-force attack to user database)
  *
  * @package	Tank_auth
- * @author	Tank
+ * @author	Ilya Konyukhov (http://konyukhov.com/soft/)
  */
 class Login_attempts extends CI_Model
 {
-	const TABLE = 'login_attempts';
+	private $table_name = 'login_attempts';
 
 	function __construct()
 	{
 		parent::__construct();
+
+		$ci =& get_instance();
+		$this->table_name = $ci->config->item('db_table_prefix', 'tank_auth').$this->table_name;
 	}
 
 	/**
@@ -31,7 +34,7 @@ class Login_attempts extends CI_Model
 		$this->db->where('ip_address', $ip_address);
 		if (strlen($login) > 0) $this->db->or_where('login', $login);
 
-		$qres = $this->db->get(self::TABLE);
+		$qres = $this->db->get($this->table_name);
 		return $qres->num_rows();
 	}
 
@@ -44,7 +47,7 @@ class Login_attempts extends CI_Model
 	 */
 	function increase_attempt($ip_address, $login)
 	{
-		$this->db->insert(self::TABLE, array('ip_address' => $ip_address, 'login' => $login));
+		$this->db->insert($this->table_name, array('ip_address' => $ip_address, 'login' => $login));
 	}
 
 	/**
@@ -52,16 +55,18 @@ class Login_attempts extends CI_Model
 	 * Also purge obsolete login attempts (to keep DB clear).
 	 *
 	 * @param	string
+	 * @param	string
+	 * @param	int
 	 * @return	void
 	 */
 	function clear_attempts($ip_address, $login, $expire_period = 86400)
 	{
 		$this->db->where(array('ip_address' => $ip_address, 'login' => $login));
-		
+
 		// Purge obsolete login attempts
 		$this->db->or_where('UNIX_TIMESTAMP(time) <', time() - $expire_period);
 
-		$this->db->delete(self::TABLE);
+		$this->db->delete($this->table_name);
 	}
 }
 

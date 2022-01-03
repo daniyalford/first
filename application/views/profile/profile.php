@@ -3,10 +3,16 @@
 		<?= $rightMenu ?>
 		<?= $chatMenu ?>
 	</aside>
-	<div class="content s4">
+	<div class="content row s4">
+		<div class="d-none my-3 col-10 mr-auto searchBoxResult w-80"></div>
 		<?= $user_info ?>
 	</div>
 </div>
+
+
+
+
+
 
 
 <!--<div class="row mt-3">-->

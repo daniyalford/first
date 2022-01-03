@@ -2,9 +2,6 @@
 
 require_once('phpass-0.1/PasswordHash.php');
 
-define('PHPASS_HASH_STRENGTH', 8);
-define('PHPASS_HASH_PORTABLE', FALSE);
-
 define('STATUS_ACTIVATED', '1');
 define('STATUS_NOT_ACTIVATED', '0');
 
@@ -15,7 +12,7 @@ define('STATUS_NOT_ACTIVATED', '0');
  *
  * @package        Tank_auth
  * @author        Ilya Konyukhov (http://konyukhov.com/soft/)
- * @version        1.0.3
+ * @version        1.0.9
  * @based on    DX Auth by Dexcell (http://dexcell.shinsengumiteam.com/dx_auth)
  * @license        MIT License Copyright (c) 2008 Erick Hartanto
  */
@@ -26,6 +23,8 @@ class Tank_auth
 	function __construct()
 	{
 		$this->ci =& get_instance();
+
+		$this->ci->load->config('tank_auth', TRUE);
 
 		$this->ci->load->library('session');
 		$this->ci->load->database();
@@ -60,7 +59,9 @@ class Tank_auth
 			if (!is_null($user = $this->ci->users->$get_user_func($login))) {    // login ok
 
 				// Does password match hash in database?
-				$hasher = new PasswordHash(PHPASS_HASH_STRENGTH, PHPASS_HASH_PORTABLE);
+				$hasher = new PasswordHash(
+					$this->ci->config->item('phpass_hash_strength', 'tank_auth'),
+					$this->ci->config->item('phpass_hash_portable', 'tank_auth'));
 				if ($hasher->CheckPassword($password, $user->password)) {        // password ok
 
 					if ($user->banned == 1) {                                    // fail - banned
@@ -71,6 +72,11 @@ class Tank_auth
 							'user_id' => $user->id,
 							'username' => $user->username,
 							'status' => ($user->activated == 1) ? STATUS_ACTIVATED : STATUS_NOT_ACTIVATED,
+							'name' => $user->username,
+							'rule' => $user->rule,
+							'pic' => $user->pic,
+							'user_status' => $user->activated,
+							'logged_in_site' => true
 						));
 
 						if ($user->activated == 0) {                            // fail - not activated
@@ -110,6 +116,10 @@ class Tank_auth
 	function logout()
 	{
 		$this->delete_autologin();
+
+		// See http://codeigniter.com/forums/viewreply/662369/ as the reason for the next line
+		$this->ci->session->set_userdata(array('user_id' => '', 'username' => '', 'status' => ''));
+
 		$this->ci->session->sess_destroy();
 	}
 
@@ -164,7 +174,9 @@ class Tank_auth
 
 		} else {
 			// Hash password using phpass
-			$hasher = new PasswordHash(PHPASS_HASH_STRENGTH, PHPASS_HASH_PORTABLE);
+			$hasher = new PasswordHash(
+				$this->ci->config->item('phpass_hash_strength', 'tank_auth'),
+				$this->ci->config->item('phpass_hash_portable', 'tank_auth'));
 			$hashed_password = $hasher->HashPassword($password);
 
 			$data = array(
@@ -188,6 +200,30 @@ class Tank_auth
 	}
 
 	/**
+	 * Check if username available for registering.
+	 * Can be called for instant form validation.
+	 *
+	 * @param string
+	 * @return    bool
+	 */
+	function is_username_available($username)
+	{
+		return ((strlen($username) > 0) and $this->ci->users->is_username_available($username));
+	}
+
+	/**
+	 * Check if email available for registering.
+	 * Can be called for instant form validation.
+	 *
+	 * @param string
+	 * @return    bool
+	 */
+	function is_email_available($email)
+	{
+		return ((strlen($email) > 0) and $this->ci->users->is_email_available($email));
+	}
+
+	/**
 	 * Change email for activation and return some data about user:
 	 * user_id, username, email, new_email_key.
 	 * Can be called for not activated users only.
@@ -206,7 +242,7 @@ class Tank_auth
 				'username' => $user->username,
 				'email' => $email,
 			);
-			if ($user->email == $email) {        // leave activation key as is
+			if (strtolower($user->email) == strtolower($email)) {        // leave activation key as is
 				$data['new_email_key'] = $user->new_email_key;
 				return $data;
 
@@ -227,14 +263,15 @@ class Tank_auth
 	 *
 	 * @param string
 	 * @param string
+	 * @param bool
 	 * @return    bool
 	 */
-	function activate_user($user_id, $new_email_key)
+	function activate_user($user_id, $activation_key, $activate_by_email = TRUE)
 	{
 		$this->ci->users->purge_na($this->ci->config->item('email_activation_expire', 'tank_auth'));
 
-		if ((strlen($user_id) > 0) and (strlen($new_email_key) > 0)) {
-			return $this->ci->users->activate_user($user_id, $new_email_key);
+		if ((strlen($user_id) > 0) and (strlen($activation_key) > 0)) {
+			return $this->ci->users->activate_user($user_id, $activation_key, $activate_by_email);
 		}
 		return FALSE;
 	}
@@ -250,7 +287,7 @@ class Tank_auth
 	function forgot_password($login)
 	{
 		if (strlen($login) > 0) {
-			if (!is_null($user = $this->ci->users->get_user_by_login($login, TRUE))) {
+			if (!is_null($user = $this->ci->users->get_user_by_login($login))) {
 
 				$data = array(
 					'user_id' => $user->id,
@@ -302,7 +339,9 @@ class Tank_auth
 			if (!is_null($user = $this->ci->users->get_user_by_id($user_id, TRUE))) {
 
 				// Hash password using phpass
-				$hasher = new PasswordHash(PHPASS_HASH_STRENGTH, PHPASS_HASH_PORTABLE);
+				$hasher = new PasswordHash(
+					$this->ci->config->item('phpass_hash_strength', 'tank_auth'),
+					$this->ci->config->item('phpass_hash_portable', 'tank_auth'));
 				$hashed_password = $hasher->HashPassword($new_password);
 
 				if ($this->ci->users->reset_password(
@@ -341,7 +380,9 @@ class Tank_auth
 		if (!is_null($user = $this->ci->users->get_user_by_id($user_id, TRUE))) {
 
 			// Check if old password correct
-			$hasher = new PasswordHash(PHPASS_HASH_STRENGTH, PHPASS_HASH_PORTABLE);
+			$hasher = new PasswordHash(
+				$this->ci->config->item('phpass_hash_strength', 'tank_auth'),
+				$this->ci->config->item('phpass_hash_portable', 'tank_auth'));
 			if ($hasher->CheckPassword($old_pass, $user->password)) {            // success
 
 				// Hash new password using phpass
@@ -374,7 +415,9 @@ class Tank_auth
 		if (!is_null($user = $this->ci->users->get_user_by_id($user_id, TRUE))) {
 
 			// Check if password correct
-			$hasher = new PasswordHash(PHPASS_HASH_STRENGTH, PHPASS_HASH_PORTABLE);
+			$hasher = new PasswordHash(
+				$this->ci->config->item('phpass_hash_strength', 'tank_auth'),
+				$this->ci->config->item('phpass_hash_portable', 'tank_auth'));
 			if ($hasher->CheckPassword($password, $user->password)) {            // success
 
 				$data = array(
@@ -435,7 +478,9 @@ class Tank_auth
 		if (!is_null($user = $this->ci->users->get_user_by_id($user_id, TRUE))) {
 
 			// Check if password correct
-			$hasher = new PasswordHash(PHPASS_HASH_STRENGTH, PHPASS_HASH_PORTABLE);
+			$hasher = new PasswordHash(
+				$this->ci->config->item('phpass_hash_strength', 'tank_auth'),
+				$this->ci->config->item('phpass_hash_portable', 'tank_auth'));
 			if ($hasher->CheckPassword($password, $user->password)) {            // success
 
 				$this->ci->users->delete_user($user_id);

@@ -16,43 +16,6 @@
 		crossorigin="anonymous"></script>
 <script>
 	$(document).ready(function () {
-		$('#id').click(function () {
-			$(this).hide();
-			$('#idc').show();
-			$('#ix').show();
-			$('.s1').hide();
-			$('.content').removeClass('s4');
-			$('.content').addClass('s8');
-			// $('.searchBoxResult').hide();
-		})
-		$("#close").click(function () {
-			$('#ix').hide();
-			$('#id').show();
-			$('#idc').hide();
-			$('.s1').show();
-			$('.content').removeClass('s8');
-			$('.content').addClass('s4');
-		})
-		$("#idc").click(function () {
-			$("#idc").hide();
-			$('#ix').hide();
-			$('#id').show();
-			$('.s1').show();
-			$('.content').removeClass('s8');
-			$('.content').addClass('s4');
-		})
-		$('#phone').click(function () {
-			$('#phone').hide();
-			$('.menuRight').hide();
-			$('#phoned').show();
-			$('.chat').show();
-		})
-		$('#phoned').click(function () {
-			$('#phoned').hide();
-			$('.menuRight').show();
-			$('#phone').show();
-			$('.chat').hide();
-		})
 		$('#search').keyup(function (event) {
 			let searchKey = $(this).val();
 			if (searchKey !== '') {
@@ -76,30 +39,17 @@
 				$('.searchBoxResult').addClass('d-none');
 			}
 		})
-		$('#usernameReceiver').keyup(function () {
-			let selectNameValue = $(this).val();
-			$.ajax({
-				method: 'post',
-				url: window.location.origin + '/work/profile/checkUser',
-				data: {selectNameValue: selectNameValue},
-				success: function (values) {
-					if (values !== false) {
-						$(this).val(values);
-					} else {
-						$("#error_chat").show();
-					}
-				}
-			})
-		})
 		$('#btnSendChat').click(function () {
-			let receiverName = $("#usernameReceiver").val();
+			let id = $("input[name='receive_id']").val();
 			let chatContent = $("#chatContent").val();
 			$.ajax({
 				method: 'post',
 				url: window.location.origin + '/work/profile/checkUserAndSendChat',
-				data: {receiverName: receiverName, chatContent: chatContent},
+				data: {id: id, chatContent: chatContent},
 				success: function (value) {
-					if (value != 'false') {
+					if (value === 'false') {
+						$('#error_chat').removeClass('d-none');
+					} else {
 						Swal.fire({
 							position: 'top-end',
 							icon: 'success',
@@ -107,6 +57,8 @@
 							showConfirmButton: false,
 							timer: 1500
 						})
+						$('#error_chat').addClass('d-none');
+						$("#chatContent").val('');
 					}
 				}
 			})

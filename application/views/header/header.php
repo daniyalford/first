@@ -13,6 +13,16 @@
 		  integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
 	<title><?= (isset($title) ? $title : 'home page') ?></title>
 	<style>
+		.inner_span {
+			margin-left: -20px;
+		}
+
+		.inner_i {
+			position: relative;
+			left: 32px;
+			bottom: 13px;
+		}
+
 		.formGroup {
 			width: 90%;
 			margin-left: auto;
@@ -74,8 +84,8 @@
 		}
 
 		#search {
-			border-radius: 10px !important;
-			box-shadow: 2px 3px 7px #ffffff !important;
+			/*border-radius: 10px !important;*/
+			/*box-shadow: 2px 3px 7px #ffffff !important;*/
 		}
 
 		.m_auto {
@@ -93,7 +103,7 @@
 		}
 
 		#search:hover {
-			box-shadow: 2px 3px 7px #f19e80 !important;
+			/*box-shadow: 2px 3px 7px #f19e80 !important;*/
 		}
 
 		.s1 {
@@ -130,7 +140,8 @@
 		}
 
 		.h-10p {
-			height: 150px !important;
+			height: 75px !important;
+			box-shadow: 8px 8px 10px #2e343a;
 		}
 
 		.chat {
@@ -176,14 +187,30 @@
 			outline: none;
 			border: 0;
 			box-shadow: 2px 3px 7px white !important;
-			padding: 7px !important;
+			position: fixed;
+			top: 8px;
+			padding: 15px !important;
+		}
+
+		#phone, #phoned {
+			right: 40px;
+		}
+
+		#id, #idc {
+			left: 40px;
+		}
+
+		#idc:hover, #id:hover, #phone:hover, #phoned:hover {
+			position: absolute;
+			top: 10px;
 		}
 
 		footer {
 			position: fixed;
 			bottom: 0;
 			width: 100%;
-			height: 130px;
+			height: 75px;
+			line-height: 75px;
 			background: #141E30; /* fallback for old browsers */
 			background: -webkit-linear-gradient(to right, #243B55, #141E30); /* Chrome 10-25, Safari 5.1-6 */
 			background: linear-gradient(to right, #243B55, #141E30); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
@@ -200,12 +227,15 @@
 			display: none;
 			/*padding-top: 10px !important;*/
 			background-color: #170d0a;
-			margin-top: 17px;
+			margin-top: 62px;
 			padding-bottom: 30px !important;
 			border-bottom-left-radius: 10px !important;
 			border-bottom-right-radius: 10px !important;
 		}
 
+		li.nav-item {
+			text-align: right;
+		}
 
 		.w-80 li {
 			background-color: #1d2c47;
@@ -217,12 +247,6 @@
 
 		.w-80 a {
 			color: white;
-		}
-
-		.posfix {
-			position: fixed;
-			top: 55px;
-			z-index: 9999999;
 		}
 
 		.navOne {
@@ -242,63 +266,206 @@
 		.comments-list .media {
 			border-bottom: 1px dotted #ccc;
 		}
+
+		body, html {
+			height: 100%;
+			width: 100%;
+			margin: 0;
+			padding: 0;
+			/*background: #e74c3c !important;*/
+		}
+
+		.searchbar {
+			margin-bottom: auto;
+			box-shadow: 2px 3px 7px grey;
+			margin-top: auto;
+			height: 60px;
+			background-color: #353b48;
+			border-radius: 30px;
+			padding: 10px;
+		}
+
+		.search_input {
+			color: white;
+			border: 0;
+			outline: 0;
+			background: none;
+			width: 0;
+			caret-color: transparent;
+			line-height: 40px;
+			transition: width 0.4s linear;
+		}
+
+		.searchbar:hover > .search_input {
+			padding: 0 10px;
+			width: 450px;
+			caret-color: #99893a;
+			transition: width 0.4s linear;
+		}
+
+		.searchbar:hover > .search_icon {
+			background: #33203e;
+		}
+
+		.search_icon {
+			height: 40px;
+			width: 40px;
+			float: right;
+			display: flex;
+			justify-content: center;
+			align-items: center;
+			border-radius: 50%;
+			color: white;
+			text-decoration: none;
+		}
+
+		#btn_search {
+			border: 0;
+			outline: none;
+			background: none;
+		}
+
+		#abas {
+			position: fixed;
+			top: 6px;
+			left: 150px;
+		}
+
+		#search::placeholder {
+			background-color: #353b48;
+			color: #fff;
+			border-radius: 7px;
+			padding: 3px;
+		}
+
+		#search:active {
+			background-color: #353b48;
+			color: #fff;
+		}
+
+		#search:focus {
+			background-color: #353b48;
+			color: #fff;
+		}
+
+		#search::selection {
+			background-color: #353b48;
+			color: #fff;
+		}
 	</style>
+
 	<script src="https://code.jquery.com/jquery-3.6.0.js"
 			integrity="sha256-H+K7U5CnXl1h5ywQfKtSj8PCmoN9aaq30gDh27Xc0jk=" crossorigin="anonymous"></script>
 	<script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+	<link href="//maxcdn.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
+	<script src="//maxcdn.bootstrapcdn.com/bootstrap/4.1.1/js/bootstrap.min.js"></script>
+	<script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
 </head>
 <body>
-<nav class="navbar navOne sticky-top navbar-dark bg-dark">
-	<div class="container-fluid">
-		<!--		<a class="navbar-brand" href="#">brand</a>-->
-		<form class="d-flex w-90" method="post" action="<?= base_url() ?>profile<?= DS ?>search">
-			<input class="form-control me-2 w-90" dir="rtl" id="search" name="search" type="text" placeholder="جست و جو"
-				   aria-label="Search">
-			<button class="col btn btn-dark-moon" name="btn_search" type="submit">یافتن</button>
-		</form>
-		<button id="id">
-			<span class="navbar-toggler-icon"></span>
-		</button>
-		<button id="idc" style="display: none;" dir="rtl">
-			<i class="fa fa-times p-1"></i>
-		</button>
-		<button id="phone" style="display: none;" dir="rtl">
-			<i class="fa fa-inbox" aria-hidden="true"></i>
-		</button>
-		<button id="phoned" dir="rtl">
-			<i class="fa fa-bars" aria-hidden="true"></i>
-		</button>
-		<!--		chat menus-->
-		<div dir="rtl" id="ix">
-			<ul id="sliderMenu"></ul>
-			<ul class="navbar-nav me-auto my-4 my-lg-0 navbar-nav-scroll"
-				style="--bs-scroll-height: 200px;">
-				<li class="nav-item">
-					<a class="nav-link active" aria-current="page" href="#"><i class="fa fa-home p-1"></i>خانه</a>
-				</li>
-				<li class="nav-item">
-					<a class="nav-link" href="<?= base_url() . 'admin' ?>"><i
-								class="fa fa-university p-1"></i>دانشگاه</a>
-				</li>
-				<li class="nav-item">
-					<a class="nav-link" href="<?= base_url() . 'profile/groups' ?>"><i class="fa fa-users p-1"></i>
-						گروه ها
+<?php $chat_num = 1;
+$user_new = 1; ?>
+<nav class="navbar navbar-icon-top navbar-expand-lg navbar-dark bg-dark">
+	<!--	<a target="_blank"  class="navbar-brand" href="#">Navbar</a>-->
+	<button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
+			aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+		<span class="navbar-toggler-icon"></span>
+	</button>
+
+	<div class="collapse navbar-collapse" id="navbarSupportedContent">
+		<ul class="navbar-nav mr-auto" dir="rtl">
+			<?php if ($this->session->userdata('rule') === 'admin') { ?>
+				<li class="nav-item active">
+					<a target="_blank" class="nav-link"
+					   href="<?= base_url() . 'add_user_by_user' . DS . $this->session->userdata('user_id') ?>">
+						<?php if ($user_new !== 0 && !empty($user_new)) { ?>
+						<i class="fa fa-user-plus inner_span">
+							<span class="spinner-grow-sm spinner-grow text-success text-center inner_i"></span>
+							<?php }else{ ?>
+							<i class="fa fa-user-plus">
+								<?php } ?>
+							</i>
+							کاربران جدید
+							<?php if ($user_new !== 0 && !empty($user_new)) { ?>
+								<span class="badge badge-info">
+						<?= $user_new ?>
+					</span>
+							<?php } ?>
 					</a>
 				</li>
 				<li class="nav-item">
-					<a class="nav-link" href="<?= base_url() . 'profile' ?>" tabindex="-1" aria-disabled="true"><i
-								class="fa fa-user p-1"></i>پنل
-						کاربری</a>
+					<a target="_blank" class="nav-link" href="<?= base_url() . 'admin' ?>">
+						<i class="fa fa-book-open">
+						</i>
+						اطلاعات کاربران
+					</a>
 				</li>
-				<li class="nav-item">
-					<a class="nav-link" href="#" id="close" tabindex="-1"
-					   aria-disabled="true"><i class="fa fa-times p-1"></i>بستن</a>
+			<?php } ?>
+			<li class="nav-item dropdown">
+				<a class="nav-link dropdown-toggle" dir="rtl" href="#" id="navbarDropdown" role="button"
+				   data-toggle="dropdown"
+				   aria-haspopup="true" aria-expanded="false">
+					<i class="fa fa-user p-1"></i>
+					<i class="fa fa-envelope-o"></i>
+					پروفایل من
+
+				</a>
+				<div class="dropdown-menu text-right" aria-labelledby="navbarDropdown" dir="rtl">
+					<?php if ($this->session->userdata('logged_in_site') === true) { ?>
+						<a class="dropdown-item" href="#">تنظیمات </a>
+					<?php } ?>
+					<div class="dropdown-divider"></div>
+					<?php if ($this->session->userdata('logged_in_site') === true) { ?>
+						<a class="dropdown-item"
+						   href="<?= base_url() . 'auth' . DS . 'logout' ?>">خروج</a>
+						<?php
+					} else { ?>
+						<a target="_blank" class="dropdown-item" href="<?= base_url() . 'auth' . DS . 'register' ?>">ثبت
+							نام
+						</a>
+						<a target="self" class="dropdown-item"
+						   href="<?= base_url() . 'auth' . DS . 'login' ?>">ورود</a>
+						<?php
+					} ?>
+
+
+				</div>
+			</li>
+		</ul>
+		<ul class="navbar-nav" dir="rtl">
+			<li class="nav-item">
+				<a target="_blank" class="nav-link" href="<?= base_url() ?>">
+					<i class="fa fa-home"></i>
+					خانه
+				</a>
+			</li>
+			<?php if ($this->session->userdata('logged_in_site') === true) { ?>
+				<li class="nav-item mx-1">
+					<a target="_blank" class="nav-link" href="<?= base_url() . '' ?>">
+						<?php if ($chat_num !== 0 && !empty($chat_num)) { ?>
+						<i class="fa fa-inbox inner_span">
+							<span class="spinner-grow-sm spinner-grow text-danger text-center inner_i"></span>
+							<?php }else{ ?>
+							<i class="fa fa-inbox">
+								<?php } ?>
+							</i>
+							چت ها
+							<?php if ($chat_num !== 0 && !empty($chat_num)) { ?>
+								<span class="badge badge-info">
+						<?= $chat_num ?>
+					</span>
+							<?php } ?>
+					</a>
 				</li>
-			</ul>
+			<?php } ?>
+		</ul>
+		<div class="d-flex justify-content-center h-100 mx-2">
+			<form method="post" action="<?= base_url() ?>profile<?= DS ?>search">
+				<div class="searchbar">
+					<input class="search_input" dir="rtl" id="searchBox" name="search" type="text"
+						   placeholder="جست و جو">
+					<button id="btn_search" class="search_icon"><i class="fas fa-search"></i></button>
+				</div>
+			</form>
 		</div>
-		<!--		chat menus-->
 	</div>
 </nav>
-<div class="container-fluid posfix">
-	<div class="d-none searchBoxResult w-90 w-80"></div>
-</div>
