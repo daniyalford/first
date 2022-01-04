@@ -30,20 +30,23 @@ class My_Lib
 		return user_info_list($name, $select_tbl_name, $data_info, '');
 	}
 
-	public function show_lists($name, $anchor, $condition, $condition_field)
+	public function show_lists($name, $anchor, $condition, $prefix_separator_address_field = '_link', $address = '', $prefix_field_we_want = '_name', $prefix_table_key = 'tbl_')
 	{
 		$CI =& get_instance();
 		if ($name !== '') {
-			if ($condition !== '' && $condition_field !== '') {
-				$data_info = $CI->db->get_where('tbl_' . $name, array($condition_field => $condition))->result_array();
+			if (is_array($condition) && !empty($condition)) {
+				$data_info = $CI->db->get_where($prefix_table_key . $name, $condition)->result_array();
+			} elseif (is_string($condition) && $condition !== '') {
+				$query = "SELECT * FROM " . $prefix_table_key . $name . " WHERE " . $condition;
+				$data_info = $CI->db->query($query)->result_array();
 			} else {
-				$query = "SELECT * FROM tbl_" . $name;
+				$query = "SELECT * FROM " . $prefix_table_key . $name;
 				$data_info = $CI->db->query($query)->result_array();
 			}
-			if ($anchor !== true) {
-				return list_info_user($data_info, $name);
+			if ($anchor !== true && $prefix_separator_address_field === '' && $address === '') {
+				return list_info_user($data_info, $name, $prefix_field_we_want);
 			}
-			return list_info_user_with_anchor($data_info, $name);
+			return list_info_user_with_anchor($data_info, $name, $prefix_separator_address_field, $address, $prefix_field_we_want);
 		}
 		return false;
 	}
@@ -52,7 +55,8 @@ class My_Lib
 	{
 		if (!empty($data)) {
 			return list_info_user_with_anchor($data, $name, $separator, $address);
-		}return false;
+		}
+		return false;
 	}
 }
 

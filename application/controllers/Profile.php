@@ -10,11 +10,11 @@ class Profile extends My_Controller
 		$lib = new My_Lib();
 		$this->load->driver('cache', array('adapter' => 'apc', 'backup' => 'file', 'key_prefix' => 'my_'));
 		if (!$profile = $this->cache->get('cprofile' . $id)) {
-			$this->load->view('module/list', array(), true);
-			$this->load->view('module/user_info', array(), true);
+			$this->load->view('module' . DS . 'list', array(), true);
+			$this->load->view('module' . DS . 'user_info', array(), true);
 			$username = $this->session->userdata('name');
 			$data_info = array(
-				'rightMenu' => $this->load->view('module' . DS . 'rightSide', array('username' => $username, 'menu' => $lib->show_lists('menu', true, '0', 'parent_id')), true),
+				'rightMenu' => $this->load->view('module' . DS . 'rightSide', array('username' => $username, 'menu' => $lib->show_lists('menu', true, array('parent_id' => 0))), true),
 				'chatMenu' => $this->load->view('module' . DS . 'chat', array('id' => $id), true),
 				'user_info' => $lib->user_info('student', $id, 'intrest', 'hobby'),
 			);
@@ -72,7 +72,7 @@ class Profile extends My_Controller
 			$query = "select * from tbl_student where student_name like '%$searchKey%' or student_description like '%$searchKey%'";
 			$search_info = $this->Student_Model->query_return_array($query);
 			$lib = new My_Lib();
-			$this->load->view('module/list', array(), true);
+			$this->load->view('module' . DS . 'list', array(), true);
 			echo $lib->search_box($search_info, 'student', '_id', base_url() . 'profile' . DS . 'index' . DS);
 		} else {
 			redirect(base_url());
@@ -84,12 +84,47 @@ class Profile extends My_Controller
 	{
 		if ($_POST['chatContent'] !== '') {
 			$receive_id = $_POST['id'];
-			$sender_id = $this->session->userdata('user_id');
-			$this->Student_Model->insert_data('tbl_chat', array('chat_receiver_id' => @$receive_id, 'chat_sender_id' => @$sender_id, 'chat_content' => $_POST['chatContent']));
+			$info = $this->Student_Model->select_where('tbl_student', array('student_id' => $receive_id));
+			$this->Student_Model->insert_data('tbl_chat', array('chat_sender_pic' => $_SESSION['pic'], 'chat_receiver_name' => $info[0]["student_name"], 'chat_receiver_id' => $info[0]["user_id"], 'chat_receiver_id_student' => @$receive_id, 'chat_sender_name' => $this->session->userdata('username'), 'chat_sender_id' => $this->session->userdata('user_id'), 'chat_content' => $_POST['chatContent']));
 			echo 'true';
 		} else {
 			echo 'false';
 			redirect(base_url());
 		}
+	}
+
+	public function checkUserAndSendChatInChatRoom()
+	{
+		if (isset($_POST['chat'])) {
+			$info = $this->Student_Model->select_where('tbl_student', array('student_id' => $_POST['id_rec']));
+			$this->Student_Model->insert_data('tbl_chat', array('chat_sender_pic' => $_SESSION['pic'],
+				'chat_receiver_name' => $info['0']["student_name"],
+				'chat_receiver_id' => $info['0']["user_id"],
+				'chat_receiver_id_student' => $_POST['id_rec'],
+				'chat_sender_name' => $this->session->userdata('username'),
+				'chat_sender_id' => $this->session->userdata('user_id'),
+				'chat_content' => $_POST['chat_Content']));
+			redirect(base_url() . 'profile' . DS . 'chat_room' . DS . $info[0]["user_id"]);
+		}
+	}
+
+	public function all_chat()
+	{
+		$lib = new My_Lib();
+		$this->load->view('module' . DS . 'list', array(), true);
+		$con = 'chat_status=1 AND chat_receiver_id=' . $this->session->userdata('user_id') . ' ORDER BY chat_id  ASC';
+		$info = $lib->show_lists('chat', true, $con, '_sender_id', base_url() . 'profile' . DS . 'chat_room' . DS, '_sender_name', 'tbl_');
+		$header_info = array('title' => 'همه ی چت ها');
+		$this->load->view('module' . DS . 'chatRoom', array('info' => $info, 'header' => $this->load->view('header' . DS . 'header', $header_info, true), 'footer' => $this->load->view('footer' . DS . 'footer', '', true)));
+
+	}
+
+	public function chat_room($sender_id)
+	{
+		$my_id = $_SESSION['user_id'];
+		$query = 'SELECT * FROM tbl_chat WHERE chat_status=1 AND (chat_receiver_id=' . $my_id . ' AND chat_sender_id=' . $sender_id . ') OR (chat_sender_id=' . $sender_id . ' AND chat_receiver_id=' . $my_id . ') ORDER BY chat_time ASC';
+		$data = $this->Student_Model->query_return_array($query);
+		$header_info = array('title' => 'صفحه ی چت');
+		$this->load->view('module' . DS . 'chatRoom', array('data' => $data, 'header' => $this->load->view('header' . DS . 'header', $header_info, true), 'footer' => $this->load->view('footer' . DS . 'footer', '', true)));
 	}
 }
