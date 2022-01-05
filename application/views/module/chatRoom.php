@@ -353,3 +353,13 @@ echo $header; ?>
 	</div>
 <?php }
 echo $footer; ?>
+
+
+'user_id' => $user->id,
+'username' => $user->username,
+'status' => ($user->activated == 1) ? STATUS_ACTIVATED : STATUS_NOT_ACTIVATED,
+'name' => $user->username,
+'rule' => $user->rule,
+'pic' => $user->pic,
+'user_status' => $user->users_check_active,
+'logged_in_site' => true

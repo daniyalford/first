@@ -10,6 +10,9 @@ class Profile extends My_Controller
 		$lib = new My_Lib();
 		$this->load->driver('cache', array('adapter' => 'apc', 'backup' => 'file', 'key_prefix' => 'my_'));
 		if (!$profile = $this->cache->get('cprofile' . $id)) {
+			if (file_exists('cprofile' . $id)){
+				unlink('cprofile' . $id);
+			}
 			$this->load->view('module' . DS . 'list', array(), true);
 			$this->load->view('module' . DS . 'user_info', array(), true);
 			$username = $this->session->userdata('name');
