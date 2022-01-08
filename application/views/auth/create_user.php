@@ -1,32 +1,21 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-	<title>register</title>
-	<meta charset="utf-8">
-	<meta name="viewport" content="width=device-width, initial-scale=1">
-	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
-	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
-	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
-	<link href="//maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
-	<script src="//maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
-	<script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
-	<style>
-		body {
-			background-image: url(http://www.joburgchiropractor.co.za/images/background.jpg);
-		}
-	</style>
-</head>
-<body>
-<div class="container" style="margin-top: 5%;">
+<style>
+	input {
+		border-radius: 10px;
+	}
+</style>
+<div class="container mt-3">
 	<div class="row">
-		<div class="col-md-4 mx-auto text-center">
+		<div class="col-md-4 mx-auto text-center" style="margin-bottom: 80px">
 			<h1><?= lang('create_user_heading') ?></h1>
 			<p><?= lang('create_user_subheading') ?></p>
 			<div class="col-sm-12">
-				<br/>
 				<div class="tab-content">
-					<div id="home" class="tab-pane fade in active text-center">
-						<?= form_open_multipart("auth/create_user") ?>
+					<div id="home" class="tab-pane in active text-center">
+						<?php if (isset($message) && $message !== '') { ?>
+							<div class="alert alert-danger rounded-10 text-center"
+								 id="infoMessage"><?= $message ?></div>
+						<?php } ?>
+						<?= form_open_multipart("auth/create_user", array('class' => 'form')) ?>
 						<div class="form-group">
 							<label for="first_name"><?= lang('create_user_fname_label', 'first_name') ?></label>
 							<?= form_input($first_name, '', 'class="form-control"') ?>
@@ -69,15 +58,11 @@
 						<div class="form-group">
 							<?= form_submit('submit', lang('create_user_submit_btn'), 'class="btn btn-primary p-4 btn-block rounded-10"') ?>
 						</div>
-						<?php if (isset($message) && $message !== '') { ?>
-							<div class="alert alert-danger rounded-10 text-center"
-								 id="infoMessage"><?= $message ?></div>
-						<?php } ?>
 						<?= form_close() ?>
 					</div>
 				</div>
 			</div>
 		</div>
 	</div>
-</body>
-</html>
+</div>
+

@@ -5,6 +5,8 @@
 	<meta name="viewport"
 		  content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
 	<meta http-equiv="X-UA-Compatible" content="ie=edge">
+	<!--	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">-->
+	<!--	<link href="//maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">-->
 	<link rel="stylesheet" href="<?= base_url() . 'assets/include/css/all.css' ?>">
 	<link rel="stylesheet" href="<?= base_url() . 'assets/include/css/fontawesome.css' ?>">
 	<link rel="stylesheet" href="<?= base_url() . 'assets/include/css/solid.css' ?>">
@@ -190,7 +192,7 @@
 			border: 3px solid #eee;
 		}
 
-		#id, #idc, #phone, #phoned {
+		#id, #idc, #phonec, #phoned {
 			border-radius: 10px !important;
 			background-color: #443142 !important;
 			outline: none;
@@ -201,7 +203,7 @@
 			padding: 15px !important;
 		}
 
-		#phone, #phoned {
+		#phonec, #phoned {
 			right: 40px;
 		}
 
@@ -209,7 +211,7 @@
 			left: 40px;
 		}
 
-		#idc:hover, #id:hover, #phone:hover, #phoned:hover {
+		#idc:hover, #id:hover, #phonec:hover, #phoned:hover {
 			position: absolute;
 			top: 10px;
 		}
@@ -218,6 +220,7 @@
 			position: fixed;
 			bottom: 0;
 			width: 100%;
+			margin-top: 10px;
 			height: 75px;
 			line-height: 75px;
 			background: #141E30; /* fallback for old browsers */
@@ -225,6 +228,7 @@
 			background: linear-gradient(to right, #243B55, #141E30); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
 			color: #fff;
 			border: 3px solid #eee;
+			z-index: 12392130973262536128739568237 !important;
 		}
 
 		a i, button i {
@@ -458,3 +462,5 @@ $user_new = 1; ?>
 		</div>
 	</div>
 </nav>
+
+

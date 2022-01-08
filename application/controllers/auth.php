@@ -51,7 +51,10 @@ class Auth extends CI_Controller
 				$this->data['users'][$k]->groups = $this->ion_auth->get_users_groups($user->id)->result();
 			}
 
-			$this->_render_page('auth' . DIRECTORY_SEPARATOR . 'index', $this->data);
+			$a = $this->_render_page('header' . DS . 'header.php', array('title' => 'login'), true);
+			$a .= $this->_render_page('auth' . DS . 'index', $this->data);
+			$a .= $this->_render_page('footer' . DS . 'footer.php', array(), true);
+			echo $a;
 		}
 	}
 
@@ -75,7 +78,7 @@ class Auth extends CI_Controller
 				//if the login is successful
 				//redirect them back to the home page
 				$this->session->set_flashdata('message', $this->ion_auth->messages());
-				redirect('/', 'refresh');
+				redirect(DS, 'refresh');
 			} else {
 				// if the login was un-successful
 				// redirect them back to the login page
@@ -99,8 +102,10 @@ class Auth extends CI_Controller
 				'id' => 'password',
 				'type' => 'password',
 			];
-
-			$this->_render_page('auth' . DIRECTORY_SEPARATOR . 'login', $this->data);
+			$a = $this->_render_page('header' . DS . 'header.php', array('title' => 'login'), true);
+			$a .= $this->_render_page('auth' . DS . 'login', $this->data);
+			$a .= $this->_render_page('footer' . DS . 'footer.php', array(), true);
+			echo $a;
 		}
 	}
 
@@ -212,7 +217,10 @@ class Auth extends CI_Controller
 
 			// set any errors and display the form
 			$this->data['message'] = (validation_errors()) ? validation_errors() : $this->session->flashdata('message');
-			$this->_render_page('auth' . DIRECTORY_SEPARATOR . 'forgot_password', $this->data);
+			$a = $this->_render_page('header' . DS . 'header.php', array('title' => 'forgot'), true);
+			$a .= $this->_render_page('auth' . DS . 'forgot_password', $this->data);
+			$a .= $this->_render_page('footer' . DS . 'footer.php', array(), true);
+			echo $a;
 		} else {
 			$identity_column = $this->config->item('identity', 'ion_auth');
 			$identity = $this->ion_auth->where($identity_column, $this->input->post('identity'))->users()->row();
@@ -509,8 +517,10 @@ class Auth extends CI_Controller
 				'type' => 'password',
 				'value' => $this->form_validation->set_value('password_confirm'),
 			];
-
-			$this->_render_page('auth' . DIRECTORY_SEPARATOR . 'create_user', $this->data);
+			$a = $this->_render_page('header' . DS . 'header.php', array('title' => 'login'), true);
+			$a .= $this->_render_page('auth' . DS . 'create_user', $this->data);
+			$a .= $this->_render_page('footer' . DS . 'footer.php', array(), true);
+			echo $a;
 		}
 	}
 

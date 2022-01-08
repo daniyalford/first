@@ -1,107 +1,94 @@
-<!doctype html>
-<html lang="en">
-<head>
-	<meta charset="UTF-8">
-	<meta name="viewport"
-		  content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
-	<meta http-equiv="X-UA-Compatible" content="ie=edge">
-	<title>forgot password</title>
-	<link href="//maxcdn.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
-	<script src="//maxcdn.bootstrapcdn.com/bootstrap/4.1.1/js/bootstrap.min.js"></script>
-	<script src="//code.jquery.com/jquery-1.11.1.min.js"></script>
-	<style>
-		.box {
-			width: 500px;
-			margin: 200px 0;
-		}
+<style>
+	.box {
+		width: 500px;
+		margin: 200px 0;
+	}
 
-		.shape1 {
-			position: relative;
-			height: 150px;
-			width: 150px;
-			background-color: #0074d9;
-			border-radius: 80px;
-			float: left;
-			margin-right: -50px;
-		}
+	.shape1 {
+		position: relative;
+		height: 150px;
+		width: 150px;
+		background-color: #0074d9;
+		border-radius: 80px;
+		float: left;
+		margin-right: -50px;
+	}
 
-		.shape2 {
-			position: relative;
-			height: 150px;
-			width: 150px;
-			background-color: #0074d9;
-			border-radius: 80px;
-			margin-top: -30px;
-			float: left;
-		}
+	.shape2 {
+		position: relative;
+		height: 150px;
+		width: 150px;
+		background-color: #0074d9;
+		border-radius: 80px;
+		margin-top: -30px;
+		float: left;
+	}
 
-		.shape3 {
-			position: relative;
-			height: 150px;
-			width: 150px;
-			background-color: #0074d9;
-			border-radius: 80px;
-			margin-top: -30px;
-			float: left;
-			margin-left: -31px;
-		}
+	.shape3 {
+		position: relative;
+		height: 150px;
+		width: 150px;
+		background-color: #0074d9;
+		border-radius: 80px;
+		margin-top: -30px;
+		float: left;
+		margin-left: -31px;
+	}
 
-		.shape4 {
-			position: relative;
-			height: 150px;
-			width: 150px;
-			background-color: #0074d9;
-			border-radius: 80px;
-			margin-top: -25px;
-			float: left;
-			margin-left: -32px;
-		}
+	.shape4 {
+		position: relative;
+		height: 150px;
+		width: 150px;
+		background-color: #0074d9;
+		border-radius: 80px;
+		margin-top: -25px;
+		float: left;
+		margin-left: -32px;
+	}
 
-		.shape5 {
-			position: relative;
-			height: 150px;
-			width: 150px;
-			background-color: #0074d9;
-			border-radius: 80px;
-			float: left;
-			margin-right: -48px;
-			margin-left: -32px;
-			margin-top: -30px;
-		}
+	.shape5 {
+		position: relative;
+		height: 150px;
+		width: 150px;
+		background-color: #0074d9;
+		border-radius: 80px;
+		float: left;
+		margin-right: -48px;
+		margin-left: -32px;
+		margin-top: -30px;
+	}
 
-		.shape6 {
-			position: relative;
-			height: 150px;
-			width: 150px;
-			background-color: #0074d9;
-			border-radius: 80px;
-			float: left;
-			margin-right: -20px;
-			margin-top: -35px;
-		}
+	.shape6 {
+		position: relative;
+		height: 150px;
+		width: 150px;
+		background-color: #0074d9;
+		border-radius: 80px;
+		float: left;
+		margin-right: -20px;
+		margin-top: -35px;
+	}
 
-		.shape7 {
-			position: relative;
-			height: 150px;
-			width: 150px;
-			background-color: #0074d9;
-			border-radius: 80px;
-			float: left;
-			margin-right: -20px;
-			margin-top: -57px;
-		}
+	.shape7 {
+		position: relative;
+		height: 150px;
+		width: 150px;
+		background-color: #0074d9;
+		border-radius: 80px;
+		float: left;
+		margin-right: -20px;
+		margin-top: -57px;
+	}
 
-		.float {
-			position: absolute;
-			z-index: 2;
-		}
+	.float {
+		position: absolute;
+		z-index: 2;
+	}
 
-		.form {
-			margin-left: 145px;
-		}
-	</style>
-</head>
-<body>
+	.form {
+		margin-left: 145px;
+	}
+</style>
 <div class="container">
 	<div id="login-row" class="row justify-content-center align-items-center">
 		<div id="login-column" class="col-md-6">
@@ -137,5 +124,3 @@
 		</div>
 	</div>
 </div>
-</body>
-</html>
