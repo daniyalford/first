@@ -10,7 +10,7 @@ class Profile extends My_Controller
 		$lib = new My_Lib();
 		$this->load->driver('cache', array('adapter' => 'apc', 'backup' => 'file', 'key_prefix' => 'my_'));
 		if (!$profile = $this->cache->get('cprofile' . $id)) {
-			if (file_exists('cprofile' . $id)){
+			if (file_exists('cprofile' . $id)) {
 				unlink('cprofile' . $id);
 			}
 			$this->load->view('module' . DS . 'list', array(), true);
@@ -24,6 +24,9 @@ class Profile extends My_Controller
 			$profile = $this->load->view('profile' . DS . 'profile', $data_info, true);
 			$this->cache->save('cprofile' . $id, $profile, 300);
 		} else {
+			if (file_exists('cprofile' . $id)) {
+				unlink('cprofile' . $id);
+			}
 			$profile = $this->cache->get('cprofile' . $id);
 		}
 		$title = 'پروفایل';
@@ -81,7 +84,6 @@ class Profile extends My_Controller
 			redirect(base_url());
 		}
 	}
-
 
 	public function checkUserAndSendChat()
 	{

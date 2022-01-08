@@ -35,6 +35,11 @@ class Student_Model extends CI_Model
 		$this->db->insert($table, $data);
 	}
 
+	public function update_data($table, $set, $con)
+	{
+		$this->db->update($table, $set, $con);
+	}
+
 }
 
 ?>

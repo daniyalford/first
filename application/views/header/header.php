@@ -384,24 +384,6 @@ $user_new = 1; ?>
 		<ul class="navbar-nav mr-auto" dir="rtl">
 			<?php if ($this->session->userdata('rule') === 'admin') { ?>
 				<li class="nav-item">
-					<a target="_blank" class="nav-link"
-					   href="<?= base_url() . 'add_user_by_user' . DS . $this->session->userdata('user_id') ?>">
-						<?php if ($user_new !== 0 && !empty($user_new)) { ?>
-						<i class="fa fa-user-plus inner_span">
-							<span class="spinner-grow-sm spinner-grow text-success text-center inner_i"></span>
-							<?php }else{ ?>
-							<i class="fa fa-user-plus">
-								<?php } ?>
-							</i>
-							کاربران جدید
-							<?php if ($user_new !== 0 && !empty($user_new)) { ?>
-								<span class="badge badge-info">
-						<?= $user_new ?>
-					</span>
-							<?php } ?>
-					</a>
-				</li>
-				<li class="nav-item">
 					<a target="_blank" class="nav-link" href="<?= base_url() . 'admin' ?>">
 						<i class="fa fa-book-open">
 						</i>
@@ -421,14 +403,12 @@ $user_new = 1; ?>
 				<div class="dropdown-menu text-right" aria-labelledby="navbarDropdown" dir="rtl">
 					<?php if ($this->session->userdata('logged_in_site') === true) { ?>
 						<a class="dropdown-item" href="#">تنظیمات </a>
-					<?php } ?>
-					<div class="dropdown-divider"></div>
-					<?php if ($this->session->userdata('logged_in_site') === true) { ?>
+						<div class="dropdown-divider"></div>
 						<a class="dropdown-item"
 						   href="<?= base_url() . 'auth' . DS . 'logout' ?>">خروج</a>
 						<?php
 					} else { ?>
-						<a target="_blank" class="dropdown-item" href="<?= base_url() . 'auth' . DS . 'register' ?>">ثبت
+						<a target="_blank" class="dropdown-item" href="<?= base_url() . 'auth' . DS . 'create_user' ?>">ثبت
 							نام
 						</a>
 						<a target="self" class="dropdown-item"
