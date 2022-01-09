@@ -101,6 +101,76 @@ class Admin extends Grocery
 		$output = $crud->render();
 		$this->_example_output($output);
 	}
+
+	public function maps()
+	{
+		$crud = new grocery_CRUd();
+		//Now set the 2 fields we want to capture with type set to hidden
+		$crud->change_field_type('latitude', 'hidden');
+		$crud->change_field_type('longitude', 'hidden');
+//make sure you add MAP as extra / additional field that we gona set the callback to.
+
+		$crud->callback_add_field('map', array($this, 'show_map_field'));
+//Here we set the callback for field generation
+		if ($crud->getState() == 'read') {
+			$crud->set_js('http://maps.google.com/maps/api/js?sensor=false', FALSE);
+			$crud->set_js("manage/plot_point_js");
+		} elseif ($crud->getState() == 'add' || $crud->getState() == 'edit' || $crud->getState() == 'copy') {
+			$crud->set_js("assets/scripts/map.js");
+			$crud->set_js('http://maps.google.com/maps/api/js?sensor=false', FALSE);
+//Make sure you remove / unset the map field before you do insert / update as its not 1 in the table and non-removal of it will give error
+			$crud->callback_before_insert(array($this, 'unset_map_field_add'));
+			$crud->callback_before_update(array($this, 'unset_map_field_edit'));
+		}
+//Function to generate the map field
+
+	}
+	public function _show_map_field($value = false, $primary_key = false)
+	{
+		return '<p>Refine your position by dragging and dropping the pin on your location</p>
+				<div id="retailer-map" style="width:530px; height:300px;"></div>';
+	}
+
+	public function _plot_point_js()
+	{
+		$retailer_id = $this->session->userdata('retailer_id');
+		$retailer = $this->cModel->getByField('retailers', 'rid', $retailer_id);
+		if (count($retailer) > 0) {
+			$latitude = $retailer['latitude'];
+			$longitude = $retailer['longitude'];
+			$script = '
+				var map;
+				var marker;
+				var circle;
+				var geocoder;
+				window.onload = function() {
+					geocoder = new google.maps.Geocoder();
+					var latlng = new google.maps.LatLng(' . $latitude . ',' . $longitude . ');
+					var myOptions = {
+				      zoom: 18,
+				      center: latlng,
+				      mapTypeId: google.maps.MapTypeId.SATELLITE
+				    };
+				    map = new google.maps.Map(document.getElementById("retailer-map"), myOptions);
+					addMarker(map.getCenter());
+					google.maps.event.addListener(map,"click", function(event) {
+						//alert("You cannot reset the location by changing pointer in here");
+			  			//addMarker(event.latLng);
+			  		});
+			  	}
+							
+				function addMarker(location) {
+			  		if(marker) {marker.setMap(null);}
+			  		marker = new google.maps.Marker({
+			     		position: location,
+			      		draggable: true
+			  		});
+			  		marker.setMap(map);
+			  	}
+			';
+			echo $script;
+		}
+	}
 }
 
 ?>
